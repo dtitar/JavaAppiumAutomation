@@ -94,6 +94,17 @@ public class FirstTest {
         assertEquals("We see unexpected title", expectedTitle, articleTitle);
     }
 
+    @Test
+    public void testSearchFieldHasText() {
+        String expectedText = "Search Wikipedia";
+        assertElementHasText(SEARCH_BOX, expectedText, "Text in search field not equals expected");
+    }
+
+    private void assertElementHasText(By locator, String expectedText, String errorMessage) {
+        WebElement element = waitForElementPresent(locator, "Can't find element with locator " + locator);
+        assertEquals(errorMessage, expectedText, element.getText());
+    }
+
     private WebElement waitAndClick(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.click();
