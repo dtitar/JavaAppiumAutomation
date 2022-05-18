@@ -58,9 +58,12 @@ public class FirstTest {
     private static final By EXPECTED_SEARCH_RESULT = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']");
     private static final By ARTICLE_TITLE = By.id("org.wikipedia:id/view_page_title_text");
 
-    private static final By SEARCH_ITEM = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']");
+    private static final String SEARCH_ITEM_XPATH = "//*[@resource-id='org.wikipedia:id/page_list_item_container']";
+    private static final By SEARCH_ITEM = By.xpath(SEARCH_ITEM_XPATH);
+    private static final By SEARCH_ITEM_TITLE = By.xpath(SEARCH_ITEM_XPATH + "//*[@resource-id='org.wikipedia:id/page_list_item_title']");
 
     @Test
+
     public void firstTest() {
         waitAndClick(SEARCH_BOX, "Cannot find search block", 5);
         waitAndSendKeys(SEARCH_BOX_INPUT, "Java", "Cannot find Search Input", 5);
@@ -109,15 +112,27 @@ public class FirstTest {
     public void testCancelSearchResults() {
         waitAndClick(SEARCH_BOX, "Cannot find search block", 5);
         waitAndSendKeys(SEARCH_BOX_INPUT, "Canada", "Cannot find Search Input", 5);
-        assertTrue("Search results size less than 2", getElementsSize(SEARCH_ITEM) > 1 );
+        assertTrue("Search results size less than 2", getElementsSize(SEARCH_ITEM) > 1);
         waitAndClick(SEARCH_CLOSE_BTN, "Cannot find X to close search", 5);
         waitForElementNotPresent(SEARCH_ITEM, "Search results still displayed", 5);
     }
 
+    @Test
+    public void testEachSearchResultContainsSearchWord() {
+        String searchWord = "Java";
+        waitAndClick(SEARCH_BOX, "Cannot find search block", 5);
+        waitAndSendKeys(SEARCH_BOX_INPUT, searchWord, "Cannot find Search Input", 5);
+        List<String> searchResultsText = getElementsText(getElementsBy(SEARCH_ITEM_TITLE));
+        searchResultsText.forEach(e -> assertTrue(format("Search result %s doesn't contain word %s", e, searchWord), e.contains(searchWord)));
+    }
 
     private int getElementsSize(By locator) {
         return waitForElements(locator, "Can't find element with locator " + locator, 15).size();
 
+    }
+
+    private List<WebElement> getElementsBy(By locator) {
+        return waitForElements(locator, "Elements are not found", 10);
     }
 
     private List<String> getElementsText(List<WebElement> elements) {
