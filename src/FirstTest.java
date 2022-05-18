@@ -12,9 +12,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.By.xpath;
 
 public class FirstTest {
@@ -54,6 +57,8 @@ public class FirstTest {
     private static final By SEARCH_CLOSE_BTN = By.id("org.wikipedia:id/search_close_btn");
     private static final By EXPECTED_SEARCH_RESULT = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']");
     private static final By ARTICLE_TITLE = By.id("org.wikipedia:id/view_page_title_text");
+
+    private static final By SEARCH_ITEM = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']");
 
     @Test
     public void firstTest() {
@@ -98,6 +103,31 @@ public class FirstTest {
     public void testSearchFieldHasText() {
         String expectedText = "Search Wikipedia";
         assertElementHasText(SEARCH_BOX, expectedText, "Text in search field not equals expected");
+    }
+
+    @Test
+    public void testCancelSearchResults() {
+        waitAndClick(SEARCH_BOX, "Cannot find search block", 5);
+        waitAndSendKeys(SEARCH_BOX_INPUT, "Canada", "Cannot find Search Input", 5);
+        assertTrue("Search results size less than 2", getElementsSize(SEARCH_ITEM) > 1 );
+        waitAndClick(SEARCH_CLOSE_BTN, "Cannot find X to close search", 5);
+        waitForElementNotPresent(SEARCH_ITEM, "Search results still displayed", 5);
+    }
+
+
+    private int getElementsSize(By locator) {
+        return waitForElements(locator, "Can't find element with locator " + locator, 15).size();
+
+    }
+
+    private List<String> getElementsText(List<WebElement> elements) {
+        return elements.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    private List<WebElement> waitForElements(By locator, String errorMessage, long timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(errorMessage);
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
     private void assertElementHasText(By locator, String expectedText, String errorMessage) {
