@@ -42,16 +42,4 @@ public class BaseTest {
     public void tearDown() {
         driver.quit();
     }
-
-
-    protected static final By SEARCH_BOX = xpath("//*[contains(@text,'Search Wikipedia')]");
-    protected static final By SEARCH_BOX_INPUT = By.id("org.wikipedia:id/search_src_text");
-    protected static final By SEARCH_CLOSE_BTN = By.id("org.wikipedia:id/search_close_btn");
-
-    protected static final By ARTICLE_TITLE = By.id("org.wikipedia:id/view_page_title_text");
-
-    protected static final String SEARCH_ITEM_XPATH = "//*[@resource-id='org.wikipedia:id/page_list_item_container']";
-    protected static final By SEARCH_ITEM = By.xpath(SEARCH_ITEM_XPATH);
-    protected static final By SEARCH_ITEM_TITLE = By.xpath(SEARCH_ITEM_XPATH + "//*[@resource-id='org.wikipedia:id/page_list_item_title']");
-
 }

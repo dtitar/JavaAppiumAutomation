@@ -10,10 +10,21 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.By.xpath;
 
 public class ThirdLessonTest extends BaseTest{
 
-    protected static final By EXPECTED_SEARCH_RESULT = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']");
+    private static final By EXPECTED_SEARCH_RESULT = By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']");
+    private static final By SEARCH_BOX = xpath("//*[contains(@text,'Search Wikipedia')]");
+    private static final By SEARCH_BOX_INPUT = By.id("org.wikipedia:id/search_src_text");
+    private static final By SEARCH_CLOSE_BTN = By.id("org.wikipedia:id/search_close_btn");
+
+    private static final By ARTICLE_TITLE = By.id("org.wikipedia:id/view_page_title_text");
+
+    private static final String SEARCH_ITEM_XPATH = "//*[@resource-id='org.wikipedia:id/page_list_item_container']";
+    private static final By SEARCH_ITEM = By.xpath(SEARCH_ITEM_XPATH);
+    private static final By SEARCH_ITEM_TITLE = By.xpath(SEARCH_ITEM_XPATH + "//*[@resource-id='org.wikipedia:id/page_list_item_title']");
+
 
     @Test
     public void firstTest() {
