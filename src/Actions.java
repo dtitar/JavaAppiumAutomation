@@ -3,6 +3,7 @@ import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -137,5 +138,12 @@ public class Actions {
     protected String waitAndGetText(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         return element.getText();
+    }
+
+    protected void longPress(By by) {
+        WebElement element = waitForElementPresent(by, "Can't find element with locator " + by.toString(), 10);
+        TouchAction action = new TouchAction(driver);
+        action.longPress(element);
+        action.perform();
     }
 }
