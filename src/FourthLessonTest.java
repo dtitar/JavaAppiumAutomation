@@ -4,8 +4,7 @@ import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 
 import static java.lang.String.format;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.openqa.selenium.By.xpath;
 
 public class FourthLessonTest extends BaseTest {
@@ -332,9 +331,38 @@ public class FourthLessonTest extends BaseTest {
         assertEquals("We see unexpected title", firstArticleName, articleTitle);
     }
 
+    @Test
+    public void testArticleHasTitle() {
+        String searchText = "Java";
+        String articleName = "Java (programming language)";
+        By searchResult = By.xpath(format("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']", articleName));
+
+        actions.waitAndClick(
+                SEARCH_BOX,
+                "Cannot find search block",
+                5);
+        actions.waitAndSendKeys(
+                SEARCH_BOX_INPUT,
+                searchText,
+                "Cannot find Search Input",
+                5);
+        actions.waitAndClick(
+                searchResult,
+                "Cannot find article with '" + articleName + "' in search",
+                15);
+        assertElementPresent(By.id("org.wikipedia:id/view_page_title_text"), "Title is not present on page");
+    }
+
     private void assertElementNotPresent(By by, String errorMessage) {
         if (actions.getAmountOfElements(by) > 0) {
             String defaultMessage = format("An element '%s' supposed to be not present", by.toString());
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    private void assertElementPresent(By by, String errorMessage) {
+        if (actions.getAmountOfElements(by) == 0) {
+            String defaultMessage = format("An element '%s' supposed to be present.", by.toString());
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }
