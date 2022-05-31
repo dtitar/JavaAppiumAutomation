@@ -1,12 +1,21 @@
+package tests.advanced_android_tests;
+
+import lib.BaseTest;
+import lib.ui.MainPageObject;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 
-import static java.lang.String.format;
 import static org.openqa.selenium.By.xpath;
 
 public class RotationTest extends BaseTest {
+
+    private MainPageObject mainPageObject;
+    protected void setUp() throws Exception {
+        super.setUp();
+        mainPageObject = new MainPageObject(driver);
+    }
 
     private static final By SEARCH_BOX = xpath("//*[contains(@text,'Search Wikipedia')]");
     private static final By SEARCH_BOX_INPUT = By.id("org.wikipedia:id/search_src_text");
@@ -16,11 +25,11 @@ public class RotationTest extends BaseTest {
         String searchText = "Java";
 
         driver.rotate(ScreenOrientation.LANDSCAPE);
-        actions.waitAndClick(
+        mainPageObject.waitForElementAndClick(
                 SEARCH_BOX,
                 "Cannot find search block",
                 5);
-        actions.waitAndSendKeys(
+        mainPageObject.waitForElementAndSendKeys(
                 SEARCH_BOX_INPUT,
                 searchText,
                 "Cannot find Search Input",
@@ -32,18 +41,18 @@ public class RotationTest extends BaseTest {
     public void testArticleHasTitle() {
         String searchText = "Java";
         String articleName = "Java (programming language)";
-        By searchResult = By.xpath(format("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']", articleName));
+        By searchResult = By.xpath(String.format("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']", articleName));
 
-        actions.waitAndClick(
+        mainPageObject.waitForElementAndClick(
                 SEARCH_BOX,
                 "Cannot find search block",
                 5);
-        actions.waitAndSendKeys(
+        mainPageObject.waitForElementAndSendKeys(
                 SEARCH_BOX_INPUT,
                 searchText,
                 "Cannot find Search Input",
                 5);
-        actions.waitAndClick(
+        mainPageObject.waitForElementAndClick(
                 searchResult,
                 "Cannot find article with '" + articleName + "' in search",
                 15);
@@ -58,8 +67,8 @@ public class RotationTest extends BaseTest {
     }
 
     private void assertElementPresent(By by, String errorMessage) {
-        if (actions.getAmountOfElements(by) == 0) {
-            String defaultMessage = format("An element '%s' supposed to be present.", by.toString());
+        if (mainPageObject.getAmountOfElements(by) == 0) {
+            String defaultMessage = String.format("An element '%s' supposed to be present.", by.toString());
             throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }

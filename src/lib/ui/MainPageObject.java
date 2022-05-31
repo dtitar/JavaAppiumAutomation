@@ -1,36 +1,35 @@
+package lib.ui;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.touch.TouchActions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 
-public class Actions {
+public class MainPageObject {
 
-    private AppiumDriver driver;
-
-    public Actions(AppiumDriver driver) {
+    protected AppiumDriver driver;
+    public MainPageObject(AppiumDriver driver) {
         this.driver = driver;
     }
 
-    protected int getElementsSize(By locator) {
+    public int getElementsSize(By locator) {
         return waitForElements(locator, "Can't find element with locator " + locator, 15).size();
 
     }
 
-    protected List<WebElement> getElementsBy(By locator) {
+    public List<WebElement> getElementsBy(By locator) {
         return waitForElements(locator, "Elements are not found", 10);
     }
 
-    protected List<String> getElementsText(List<WebElement> elements) {
+    public List<String> getElementsText(List<WebElement> elements) {
         return elements.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
@@ -40,46 +39,46 @@ public class Actions {
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
     }
 
-    protected void assertElementHasText(By locator, String expectedText, String errorMessage) {
+    public void assertElementHasText(By locator, String expectedText, String errorMessage) {
         WebElement element = waitForElementPresent(locator, "Can't find element with locator " + locator);
         assertEquals(errorMessage, expectedText, element.getText());
     }
 
-    protected WebElement waitAndClick(By by, String errorMessage, long timeoutInSeconds) {
+    public WebElement waitForElementAndClick(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.click();
         return element;
     }
 
-    protected WebElement waitAndSendKeys(By by, String text, String errorMessage, long timeoutInSeconds) {
+    public WebElement waitForElementAndSendKeys(By by, String text, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.sendKeys(text);
         return element;
     }
 
-    protected WebElement waitAndClear(By by, String errorMessage, long timeoutInSeconds) {
+    public WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.clear();
         return element;
     }
 
-    protected WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
+    public WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage);
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    protected WebElement waitForElementPresent(By by, String errorMessage) {
+    public WebElement waitForElementPresent(By by, String errorMessage) {
         return waitForElementPresent(by, errorMessage, 5);
     }
 
-    protected boolean waitForElementNotPresent(By by, String errorMessage, long timeoutInSeconds) {
+    public boolean waitForElementNotPresent(By by, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage);
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
     }
 
-    protected void swipeUp(int timeOfSwipe) {
+    public void swipeUp(int timeOfSwipe) {
         TouchAction touchAction = new TouchAction(driver);
         Dimension size = driver.manage().window().getSize();
         int x = size.width / 2;
@@ -93,11 +92,11 @@ public class Actions {
                 .perform();
     }
 
-    protected void swipeUpQuick() {
+    public void swipeUpQuick() {
         swipeUp(200);
     }
 
-    protected void swipeUpToFindElement(By by, String errorMessage, int maxSwipes) {
+    public void swipeUpToFindElement(By by, String errorMessage, int maxSwipes) {
         int alreadySwiped = 0;
         while (driver.findElements(by).size() == 0) {
             if (alreadySwiped > maxSwipes) {
@@ -109,7 +108,7 @@ public class Actions {
         }
     }
 
-    protected void swipeLeft(By by, String errorMessage) {
+    public void swipeLeft(By by, String errorMessage) {
         WebElement element = waitForElementPresent(by, errorMessage, 10);
         int leftX = element.getLocation().getX();
         int rightX = leftX + element.getSize().getWidth();
@@ -126,24 +125,38 @@ public class Actions {
                 .perform();
     }
 
-    protected int getAmountOfElements(By by) {
+    public int getAmountOfElements(By by) {
         return driver.findElements(by).size();
     }
 
-    protected String waitAndGetAttribute(By by, String attribute, String errorMessage, long timeoutInSeconds) {
+    public String waitAndGetAttribute(By by, String attribute, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         return element.getAttribute(attribute);
     }
 
-    protected String waitAndGetText(By by, String errorMessage, long timeoutInSeconds) {
+    public String waitAndGetText(By by, String errorMessage, long timeoutInSeconds) {
         WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         return element.getText();
     }
 
-    protected void longPress(By by) {
+    public void longPress(By by) {
         WebElement element = waitForElementPresent(by, "Can't find element with locator " + by.toString(), 10);
         TouchAction action = new TouchAction(driver);
         action.longPress(element);
         action.perform();
+    }
+
+    public void assertElementNotPresent(By by, String errorMessage) {
+        if (getAmountOfElements(by) > 0) {
+            String defaultMessage = String.format("An element '%s' supposed to be not present", by.toString());
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
+    }
+
+    public void assertElementPresent(By by, String errorMessage) {
+        if (getAmountOfElements(by) == 0) {
+            String defaultMessage = String.format("An element '%s' supposed to be present.", by.toString());
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
     }
 }
