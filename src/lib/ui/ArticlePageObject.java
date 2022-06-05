@@ -24,12 +24,20 @@ public class ArticlePageObject extends MainPageObject {
         return this.waitForElementPresent(ARTICLE_TITLE, "Title not displayed", 15);
     }
 
+    public void assertArticleHasTitle() {
+        this.assertElementPresent(ARTICLE_TITLE, "Cannot find article title");
+    }
+
     public String getArticleTitle() {
         return waitForTitleElement().getText();
     }
 
     public void swipeToFooter() {
         this.swipeUpToFindElement(FOOTER, "Cannot find the end of article", 20);
+    }
+
+    private boolean isReadingListContainFolderWithName(String folderName) {
+        return this.getAmountOfElements(getElementLocatorByText(folderName)) == 1;
     }
 
     public void addArticleToMyList(String folderName) {
@@ -41,6 +49,23 @@ public class ArticlePageObject extends MainPageObject {
                 OPTIONS_ADD_TO_MY_LIST_BUTTON,
                 "Cannot find option to add article to reading list",
                 5);
+        if (isReadingListContainFolderWithName(folderName)) {
+            addArticleToExistingFolder(folderName);
+        } else {
+            addArticleToNewFolder(folderName);
+        }
+    }
+
+
+    private void addArticleToExistingFolder(String folderName) {
+        this.chooseFolder(folderName);
+    }
+
+    private void chooseFolder(String folderName) {
+        this.waitForElementAndClick(getElementLocatorByText(folderName), "Cannot find folder with name " + folderName, 5);
+    }
+
+    private void addArticleToNewFolder(String folderName) {
         this.waitForElementPresent(
                 ADD_TO_MY_LIST_OVERLAY,
                 "Cannot find 'Got it' tip overlay",
@@ -53,11 +78,9 @@ public class ArticlePageObject extends MainPageObject {
                 MY_LIST_NAME_INPUT, "Cannot find input to set name of articles folder",
                 5);
 
-        String nameOfFolder = "Learning programming";
-
         this.waitForElementAndSendKeys(
                 MY_LIST_NAME_INPUT,
-                nameOfFolder, "Cannot put text into articles folder input",
+                folderName, "Cannot put text into articles folder input",
                 5);
         this.waitForElementAndClick(
                 MY_LIST_OK_BUTTON,

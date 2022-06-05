@@ -34,4 +34,19 @@ public class ArticleTests extends BaseTest {
         articlePage.waitForTitleElement();
         articlePage.swipeToFooter();
     }
+
+    //Ex6: Тест: assert title
+    @Test
+    public void testArticleHasTitle() {
+        String searchText = "Java";
+        String expectedTitle = "Java (programming language)";
+
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.initSearchInput();
+        searchPage.typeSearchLine(searchText);
+        searchPage.clickByArticleWithSubstring(expectedTitle);
+
+        ArticlePageObject articlePage = new ArticlePageObject(driver);
+        articlePage.assertArticleHasTitle();
+    }
 }

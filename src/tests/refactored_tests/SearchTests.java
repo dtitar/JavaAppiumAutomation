@@ -45,4 +45,48 @@ public class SearchTests extends BaseTest {
         searchPage.waitForEmptyResultsLabel();
         searchPage.assertThereIsNoResultOfSearch();
     }
+
+    @Test
+    public void testEachSearchResultContainsSearchText() {
+        String searchLine = "Java";
+
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.initSearchInput();
+        searchPage.typeSearchLine(searchLine);
+        searchPage.waitForSearchResults();
+
+        searchPage.assertEachArticleTitleContainsText(searchLine);
+    }
+
+    @Test
+    public void testClearSearch() {
+        String searchLine = "Java";
+
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.initSearchInput();
+        searchPage.typeSearchLine(searchLine);
+        searchPage.clearSearch();
+        searchPage.clickCancelSearch();
+        searchPage.assertThereIsNoResultOfSearch();
+    }
+
+    @Test
+    public void testSearchFieldHasText() {
+        String expectedText = "Search Wikipedia";
+
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.assertSearchInputFieldHasText(expectedText);
+    }
+
+    //Ex3: Тест: отмена поиска
+    @Test
+    public void testCancelSearchResults() {
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.initSearchInput();
+        searchPage.typeSearchLine("Canada");
+        searchPage.waitForSearchResults();
+        assertTrue("Search results size less than 2", searchPage.getAmountOfFoundArticles() > 1);
+        searchPage.clickCancelSearch();
+        searchPage.assertThereIsNoResultOfSearch();
+    }
 }

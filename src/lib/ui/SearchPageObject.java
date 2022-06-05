@@ -3,6 +3,10 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
+import java.util.List;
+
+import static java.lang.String.format;
+import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.By.xpath;
 
 public class SearchPageObject extends MainPageObject {
@@ -31,11 +35,15 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void waitForSearchResult(String resultText) {
-        this.waitForElementPresent(By.xpath(String.format(SEARCH_RESULT_XPATH_TPL, resultText)), "Cannot find search result with text - " + resultText);
+        this.waitForElementPresent(By.xpath(format(SEARCH_RESULT_XPATH_TPL, resultText)), "Cannot find search result with text - " + resultText);
+    }
+
+    public void waitForSearchResults() {
+        this.waitForElements(SEARCH_RESULT_ELEMENT, "Cannot find search results", 15);
     }
 
     public void clickByArticleWithSubstring(String substring) {
-        this.waitForElementAndClick(By.xpath(String.format(SEARCH_RESULT_XPATH_TPL, substring)), "Cannot find and click search result with substring - " + substring, 10);
+        this.waitForElementAndClick(By.xpath(format(SEARCH_RESULT_XPATH_TPL, substring)), "Cannot find and click search result with substring - " + substring, 10);
     }
 
 
@@ -52,7 +60,7 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public int getAmountOfFoundArticles() {
-        this.waitForElementPresent(SEARCH_RESULT_ELEMENT, String.format("Cannot find anuthing by the request"), 15);
+        this.waitForElementPresent(SEARCH_RESULT_ELEMENT, format("Cannot find anuthing by the request"), 15);
         return this.getAmountOfElements(SEARCH_RESULT_ELEMENT);
     }
 
@@ -62,5 +70,22 @@ public class SearchPageObject extends MainPageObject {
 
     public void assertThereIsNoResultOfSearch() {
         this.assertElementNotPresent(SEARCH_RESULT_ELEMENT, "We supposed not to find any results");
+    }
+
+    public List<String> getArticlesTitles() {
+        return getElementsText(getElementsBy(SEARCH_RESULT_ELEMENT));
+    }
+
+    public void assertEachArticleTitleContainsText(String text) {
+        List<String> articlesTitles = this.getArticlesTitles();
+        articlesTitles.forEach(e -> assertTrue(format("Search result %s doesn't contain text %s", e, text), e.contains(text)));
+    }
+
+    public void clearSearch() {
+        this.waitForElementAndClear(SEARCH_INPUT, "Cannot clear input line", 5);
+    }
+
+    public void assertSearchInputFieldHasText(String expectedText) {
+        this.assertElementHasText(SEARCH_INPUT, expectedText, "Text in search field not equals expected");
     }
 }

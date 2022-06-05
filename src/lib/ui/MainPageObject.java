@@ -11,11 +11,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 
 public class MainPageObject {
 
     protected AppiumDriver driver;
+
     public MainPageObject(AppiumDriver driver) {
         this.driver = driver;
     }
@@ -29,11 +31,16 @@ public class MainPageObject {
         return waitForElements(locator, "Elements are not found", 10);
     }
 
+    public By getElementLocatorByText(String text) {
+        return By.xpath(format("//*[@text='%s']", text));
+    }
+
+
     public List<String> getElementsText(List<WebElement> elements) {
         return elements.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
-    private List<WebElement> waitForElements(By locator, String errorMessage, long timeoutInSeconds) {
+    public List<WebElement> waitForElements(By locator, String errorMessage, long timeoutInSeconds) {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage);
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(locator));
