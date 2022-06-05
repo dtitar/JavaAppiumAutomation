@@ -241,8 +241,8 @@ public class AdvancedAndroidTest extends BaseTest {
     @Test
     public void testSaveTwoArticlesToMyList() {
         String searchText = "Java";
-        String firstArticleName = "Java (programming language)"; //
-        String secondArticleName = "JavaScript"; //
+        String firstArticleName = "Java (programming language)";
+        String secondArticleName = "JavaScript";
         By firstArticleLocator = By.xpath(String.format("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']", firstArticleName));
         By secondArticleLocator = By.xpath(String.format("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']", secondArticleName));
 
