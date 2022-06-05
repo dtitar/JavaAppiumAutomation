@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
@@ -21,8 +22,28 @@ public class SearchPageObject extends MainPageObject {
 
     private static final By SEARCH_EMPTY_RESULT_ELEMENT = By.xpath("//*[@text='No results found']");
 
+    private static final String ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='%s']/following-sibling::*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='%s']";
+
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
+    }
+
+
+    //TEMPLATES METHODS
+    private By getArticleLocatorByTitleAndDescription(String title, String description) {
+        return xpath(format(ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL, title, description));
+    }
+    //
+
+    public WebElement waitForElementByTitleAndDescription(String title, String description) {
+        return waitForElementPresent(getArticleLocatorByTitleAndDescription(title, description), format("Cannot find element with title '%s' and description '%s'", title, description));
+    }
+
+    public void assertSearchResultWithTitleAndDescriptionDisplayed(String title, String description) {
+        if (getAmountOfElements(getArticleLocatorByTitleAndDescription(title, description)) == 0) {
+            String defaultMessage = format("An element with title '%s' and description '%s' is not present", title, description);
+            throw new AssertionError(defaultMessage);
+        }
     }
 
     public void initSearchInput() {

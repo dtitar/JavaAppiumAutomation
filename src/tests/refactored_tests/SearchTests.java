@@ -89,4 +89,19 @@ public class SearchTests extends BaseTest {
         searchPage.clickCancelSearch();
         searchPage.assertThereIsNoResultOfSearch();
     }
+
+    //Ex9*: Рефакторинг темплейта
+    @Test
+    public void testSearchResultsByTitleAndDescription() {
+        String searchLine = "Java";
+
+        SearchPageObject searchPage = new SearchPageObject(driver);
+        searchPage.initSearchInput();
+        searchPage.typeSearchLine(searchLine);
+        searchPage.waitForSearchResults();
+
+        searchPage.assertSearchResultWithTitleAndDescriptionDisplayed("Java", "Island of Indonesia, Southeast Asia");
+        searchPage.assertSearchResultWithTitleAndDescriptionDisplayed("JavaScript", "High-level programming language");
+        searchPage.assertSearchResultWithTitleAndDescriptionDisplayed("Java (programming language)", "Object-oriented programming language");
+    }
 }
