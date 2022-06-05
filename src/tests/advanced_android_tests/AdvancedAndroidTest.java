@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
+
 import static org.openqa.selenium.By.xpath;
 
 public class AdvancedAndroidTest extends BaseTest {

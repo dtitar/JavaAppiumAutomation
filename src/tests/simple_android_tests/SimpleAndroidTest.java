@@ -8,9 +8,6 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-import static java.lang.String.format;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.By.xpath;
 
 public class SimpleAndroidTest extends BaseTest {
