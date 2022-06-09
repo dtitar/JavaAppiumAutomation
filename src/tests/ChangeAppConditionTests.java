@@ -1,4 +1,4 @@
-package tests.refactored_tests;
+package tests;
 
 import lib.BaseTest;
 import lib.ui.ArticlePageObject;
