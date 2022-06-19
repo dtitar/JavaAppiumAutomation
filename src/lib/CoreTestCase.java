@@ -8,8 +8,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.File;
 import java.net.URL;
+import java.time.Duration;
 
-public class BaseTest extends TestCase {
+public class CoreTestCase extends TestCase {
 
     protected static final String APPIUM_SERVER_URL = "http://127.0.0.1:4723/wd/hub";
     protected static final String APP_NAME = "org.wikipedia";
@@ -53,6 +54,6 @@ public class BaseTest extends TestCase {
     }
 
     protected void backgroundApp(int seconds) {
-        driver.runAppInBackground(seconds);
+        driver.runAppInBackground(Duration.ofSeconds(seconds));
     }
 }

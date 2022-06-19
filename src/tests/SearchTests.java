@@ -1,10 +1,10 @@
 package tests;
 
-import lib.BaseTest;
+import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
-public class SearchTests extends BaseTest {
+public class SearchTests extends CoreTestCase {
 
     @Test
     public void testSearch() {

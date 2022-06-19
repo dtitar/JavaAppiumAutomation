@@ -1,11 +1,11 @@
 package tests;
 
-import lib.BaseTest;
+import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
-public class ArticleTests extends BaseTest {
+public class ArticleTests extends CoreTestCase {
 
     @Test
     public void testCompareArticleTitle() {

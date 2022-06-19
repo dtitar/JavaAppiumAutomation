@@ -1,11 +1,11 @@
 package tests;
 
-import lib.BaseTest;
+import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
 
-public class ChangeAppConditionTests extends BaseTest {
+public class ChangeAppConditionTests extends CoreTestCase {
 
     @Test
     public void testChangeScreenOrientationOnSearchResults() {
