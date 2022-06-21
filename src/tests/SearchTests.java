@@ -25,6 +25,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
+
         String searchText = "Linkin Park Disсography";
 
         SearchPageObject searchPage = new SearchPageObject(driver);

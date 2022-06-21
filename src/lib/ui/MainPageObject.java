@@ -149,12 +149,12 @@ public class MainPageObject {
         return element.getText();
     }
 
-    public void longPress(By by) {
-        WebElement element = waitForElementPresent(by, "Can't find element with locator " + by.toString(), 10);
-        TouchAction action = new TouchAction(driver);
-        action.longPress(element);
-        action.perform();
-    }
+//    public void longPress(By by) {
+//        WebElement element = waitForElementPresent(by, "Can't find element with locator " + by.toString(), 10);
+//        TouchAction action = new TouchAction(driver);
+//        action.longPress(element);
+//        action.perform();
+//    }
 
     public void assertElementNotPresent(By by, String errorMessage) {
         if (getAmountOfElements(by) > 0) {
