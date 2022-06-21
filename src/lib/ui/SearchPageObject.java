@@ -12,17 +12,17 @@ import static org.openqa.selenium.By.xpath;
 
 public class SearchPageObject extends MainPageObject {
 
-    private static final By SEARCH_INIT_ELEMENT = xpath("//*[contains(@text,'Search Wikipedia')]");
-    private static final By SEARCH_INPUT = By.id("org.wikipedia:id/search_src_text");
+    private static final String SEARCH_INIT_ELEMENT = "xpath://*[contains(@text,'Search Wikipedia')]";
+    private static final String SEARCH_INPUT = "id:org.wikipedia:id/search_src_text";
 
-    private static final By SEARCH_CANCEL_BTN = By.id("org.wikipedia:id/search_close_btn");
-    private static final String SEARCH_RESULT_XPATH_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']";
+    private static final String SEARCH_CANCEL_BTN = "id:org.wikipedia:id/search_close_btn";
+    private static final String SEARCH_RESULT_XPATH_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='%s']";
 
-    private static final By SEARCH_RESULT_ELEMENT = By.xpath("//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']");
+    private static final String SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
 
-    private static final By SEARCH_EMPTY_RESULT_ELEMENT = By.xpath("//*[@text='No results found']");
+    private static final String SEARCH_EMPTY_RESULT_ELEMENT = "xpath://*[@text='No results found']";
 
-    private static final String ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='%s']/following-sibling::*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='%s']";
+    private static final String ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='%s']/following-sibling::*[@resource-id='org.wikipedia:id/page_list_item_description'][@text='%s']";
 
     public SearchPageObject(AppiumDriver driver) {
         super(driver);
@@ -30,8 +30,8 @@ public class SearchPageObject extends MainPageObject {
 
 
     //TEMPLATES METHODS
-    private By getArticleLocatorByTitleAndDescription(String title, String description) {
-        return xpath(format(ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL, title, description));
+    private String getArticleLocatorByTitleAndDescription(String title, String description) {
+        return format(ARTICLE_BY_TITLE_AND_DESCRIPTION_XPATH_TPL, title, description);
     }
     //
 
@@ -56,7 +56,7 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void waitForSearchResult(String resultText) {
-        this.waitForElementPresent(By.xpath(format(SEARCH_RESULT_XPATH_TPL, resultText)), "Cannot find search result with text - " + resultText);
+        this.waitForElementPresent(format(SEARCH_RESULT_XPATH_TPL, resultText), "Cannot find search result with text - " + resultText);
     }
 
     public void waitForSearchResults() {
@@ -64,7 +64,7 @@ public class SearchPageObject extends MainPageObject {
     }
 
     public void clickByArticleWithSubstring(String substring) {
-        this.waitForElementAndClick(By.xpath(format(SEARCH_RESULT_XPATH_TPL, substring)), "Cannot find and click search result with substring - " + substring, 10);
+        this.waitForElementAndClick(format(SEARCH_RESULT_XPATH_TPL, substring), "Cannot find and click search result with substring - " + substring, 10);
     }
 
 

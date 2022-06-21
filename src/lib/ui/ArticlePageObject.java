@@ -6,14 +6,14 @@ import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject {
 
-    private static final By ARTICLE_TITLE = By.id("org.wikipedia:id/view_page_title_text");
-    private static final By FOOTER = By.xpath("//*[@text='View page in browser']");
-    private static final By OPTIONS = By.xpath("//android.widget.ImageView[@content-desc='More options']");
-    private static final By OPTIONS_ADD_TO_MY_LIST_BUTTON = By.xpath("//*[@text='Add to reading list']");
-    private static final By ADD_TO_MY_LIST_OVERLAY = By.id("org.wikipedia:id/onboarding_button");
-    private static final By MY_LIST_NAME_INPUT = By.id("org.wikipedia:id/text_input");
-    private static final By MY_LIST_OK_BUTTON = By.id("android:id/button1");
-    private static final By CLOSE_ARTICLE_BUTTON = By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']");
+    private static final String ARTICLE_TITLE = "id:org.wikipedia:id/view_page_title_text";
+    private static final String FOOTER = "xpath://*[@text='View page in browser']";
+    private static final String OPTIONS = "xpath://android.widget.ImageView[@content-desc='More options']";
+    private static final String OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']";
+    private static final String ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button";
+    private static final String MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input";
+    private static final String MY_LIST_OK_BUTTON = "id:android:id/button1";
+    private static final String CLOSE_ARTICLE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
 
 
     public ArticlePageObject(AppiumDriver driver) {

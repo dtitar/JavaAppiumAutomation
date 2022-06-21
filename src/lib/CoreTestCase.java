@@ -16,12 +16,13 @@ public class CoreTestCase extends TestCase {
     private static final String PLATFORM_ANDROID = "android";
 
     protected static final String APPIUM_SERVER_URL = "http://127.0.0.1:4723/wd/hub";
-    protected static final String APP_NAME = "org.wikipedia.apk";
+    protected static final String APP_NAME = "org.wikipedia";
     protected static final String APP_LOCATION = System.getProperty("user.dir")
             + File.separator
             + "apks"
             + File.separator
-            + APP_NAME;
+            + APP_NAME
+            + ".apk";
     protected AppiumDriver driver;
 
 
@@ -29,7 +30,7 @@ public class CoreTestCase extends TestCase {
     protected void setUp() throws Exception {
 
         super.setUp();
-        DesiredCapabilities capabilities = this.getCapabilitiesbyPlatformEnv();
+        DesiredCapabilities capabilities = this.getCapabilitiesByPlatformEnv();
 
         driver = new AndroidDriver(new URL(APPIUM_SERVER_URL), capabilities);
         this.rotateScreenPortrait();
@@ -53,7 +54,7 @@ public class CoreTestCase extends TestCase {
         driver.runAppInBackground(Duration.ofSeconds(seconds));
     }
 
-    private DesiredCapabilities getCapabilitiesbyPlatformEnv() throws Exception {
+    private DesiredCapabilities getCapabilitiesByPlatformEnv() throws Exception {
         String platform = System.getenv("PLATFORM");
         DesiredCapabilities capabilities = new DesiredCapabilities();
 

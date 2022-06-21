@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 
 public class NavigationUi extends MainPageObject{
 
-    private static final By MY_LISTS_LINK = By.xpath("//android.widget.FrameLayout[@content-desc='My lists']");
+    private static final String MY_LISTS_LINK = "xpath://android.widget.FrameLayout[@content-desc='My lists']";
 
     public NavigationUi(AppiumDriver driver) {
         super(driver);
