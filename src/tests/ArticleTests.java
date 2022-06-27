@@ -1,52 +1,77 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
+import org.openqa.selenium.By;
 
 public class ArticleTests extends CoreTestCase {
 
     @Test
     public void testCompareArticleTitle() {
-        String expectedTitle = "Java (programming language)";
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        SearchPageObject searchPage = new SearchPageObject(driver);
-        searchPage.initSearchInput();
-        searchPage.typeSearchLine("Java");
-        searchPage.clickByArticleWithSubstring(expectedTitle);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePage = new ArticlePageObject(driver);
-        articlePage.waitForTitleElement();
-        assertEquals("We see unexpected title", expectedTitle, articlePage.getArticleTitle());
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+        String article_title = ArticlePageObject.getArticleTitle();
+
+        assertEquals(
+                "We see unexpected title",
+                "Java (programming language)",
+                article_title
+        );
     }
 
     @Test
     public void testSwipeArticle() {
-        String searchLine = "Appium";
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);;
 
-        SearchPageObject searchPage = new SearchPageObject(driver);
-        searchPage.initSearchInput();
-        searchPage.typeSearchLine(searchLine);
-        searchPage.clickByArticleWithSubstring(searchLine);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePage = new ArticlePageObject(driver);
-        articlePage.waitForTitleElement();
-        articlePage.swipeToFooter();
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+        ArticlePageObject.waitForTitleElement();
+        ArticlePageObject.swipeToFooter();
     }
 
-    //Ex6: Тест: assert title
     @Test
-    public void testArticleHasTitle() {
-        String searchText = "Java";
-        String expectedTitle = "Java (programming language)";
+    public void testAssertElementPresent() {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);;
 
-        SearchPageObject searchPage = new SearchPageObject(driver);
-        searchPage.initSearchInput();
-        searchPage.typeSearchLine(searchText);
-        searchPage.clickByArticleWithSubstring(expectedTitle);
+        SearchPageObject.initSearchInput();
 
-        ArticlePageObject articlePage = new ArticlePageObject(driver);
-        articlePage.assertArticleHasTitle();
+        String search_line = "Olympic games";
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.clickByArticleWithSubstring("Major international sport event");
+
+        if (Platform.getInstance().isAndroid()) {
+            assertTrue(
+                    "Cannot find article title",
+                    driver.findElement(By.id("org.wikipedia:id/view_page_title_text")).isDisplayed() == true);
+        } else {
+            assertTrue(
+                    "Cannot find article title",
+                    driver.findElement(By.id("Olympic Games")).isDisplayed() == true);
+        }
+    }
+
+    @Test
+    public void testSearchArticlesByTitleAndDescription() {
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Olympic");
+
+        SearchPageObject.waitForElementByTitleAndDescription("Olympic", "Wikimedia disambiguation page");
+        SearchPageObject.waitForElementByTitleAndDescription("Olympic Games", "Major international sport event");
+        SearchPageObject.waitForElementByTitleAndDescription("Olympic symbols", "Symbols of the International Olympic Games");
     }
 }
